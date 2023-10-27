@@ -113,3 +113,11 @@ function show_error_modal(error, title = false) {
         class: 'small'
     }).modal('show');
 }
+
+function serializeFormToObject($formElement) {
+    return $formElement.serializeArray().reduce((obj, { name, value }) => {
+        obj[name] = value;
+        return obj;
+    }, {});
+}
+
