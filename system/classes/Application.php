@@ -152,9 +152,9 @@ class Application
         }
 
         // If language is set to a non-existing one but there's at least one existing language, switch to that language
-        if(!in_array($_SESSION['language'], $supported_languages)) {
-            if(isset($supported_languages[0])){
-                $_SESSION['language']=$supported_languages[0];
+        if (!in_array($_SESSION['language'], $supported_languages)) {
+            if (isset($supported_languages[0])) {
+                $_SESSION['language'] = $supported_languages[0];
             }
         }
 
@@ -197,7 +197,7 @@ class Application
 
 
             // Set controller, action and params
-            $this->client = isset($path[0]) ? array_shift($path) : Client::getSlug(1);
+            $this->client = isset($path[0]) ? array_shift($path) : (Client::getSlug(1) ?: 'undefined');
             $this->controller = isset($path[0]) ? array_shift($path) : DEFAULT_CONTROLLER;
             $this->action = isset($path[0]) && !empty($path[0]) ? array_shift($path) : 'index';
             $this->params = isset($path[0]) ? $path : array();

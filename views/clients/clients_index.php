@@ -1,6 +1,6 @@
 <div class="row">
 
-    <h1>Modules</h1>
+    <h1>Clients</h1>
 
     <div class="table-responsive">
         <!-- Fomantic UI table -->
@@ -10,17 +10,17 @@
 
             <tr>
                 <th>ID</th>
-                <th><?= __('Module Name') ?></th>
+                <th><?= __('Client Name') ?></th>
             </tr>
 
             </thead>
 
             <tbody>
 
-            <?php foreach ($modules as $module): ?>
-                <tr data-href="modules/<?= $module['moduleId'] ?>">
-                    <td><?= $module['moduleId'] ?></td>
-                    <td><?= $module['moduleName'] ?></td>
+            <?php foreach ($clients as $client): ?>
+                <tr data-href="clients/<?= $client['clientId'] ?>">
+                    <td><?= $client['clientId'] ?></td>
+                    <td><?= $client['clientName'] ?></td>
                 </tr>
             <?php endforeach; ?>
 

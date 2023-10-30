@@ -6,7 +6,7 @@
 </style>
 <div class="row">
 
-    <h1>Modules</h1>
+    <h1>Clients</h1>
 
     <div class="table-responsive">
 
@@ -17,11 +17,11 @@
 
             <tr>
                 <th>ID</th>
-                <td><?= $module['moduleId'] ?></td>
+                <td><?= $client['clientId'] ?></td>
             </tr>
             <tr>
-                <th><?= __('Module Name') ?></th>
-                <td><?= $module['moduleName'] ?></td>
+                <th><?= __('Client Name') ?></th>
+                <td><?= $client['clientName'] ?></td>
             </tr>
 
             </tbody>

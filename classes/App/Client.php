@@ -12,6 +12,6 @@ class Client
 
     public static function getSlug(int $clientId)
     {
-        return Db::getCol("SELECT slug FROM clients WHERE clientId = ?", [$clientId]);
+       return Db::getCol("SELECT slug FROM clients WHERE clientId = ?", [$clientId]);
     }
 }
