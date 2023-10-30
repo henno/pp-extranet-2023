@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.32, for osx10.12 (x86_64)
+-- MariaDB dump 10.19-11.0.2-MariaDB, for osx10.18 (arm64)
 --
--- Host: localhost    Database: halo
+-- Host: localhost    Database: ppExtranet
 -- ------------------------------------------------------
--- Server version	5.7.32
+-- Server version	11.0.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -27,7 +27,7 @@ CREATE TABLE `activities` (
   `activityName` varchar(50) NOT NULL COMMENT 'Autocreated',
   `activityDescription` varchar(191) NOT NULL,
   PRIMARY KEY (`activityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,9 @@ CREATE TABLE `activities` (
 
 LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
-INSERT INTO `activities` VALUES (1,'login','logged in'),(2,'logout','logged out');
+INSERT INTO `activities` VALUES
+(1,'login','logged in'),
+(2,'logout','logged out');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,7 +105,7 @@ CREATE TABLE `settings` (
   `settingName` varchar(255) NOT NULL,
   `settingValue` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`settingName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,6 +119,32 @@ INSERT INTO `settings` VALUES ('projectVersion','0'),('translationUpdateLastRun'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sites`
+--
+
+DROP TABLE IF EXISTS `sites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sites` (
+  `siteId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `siteName` varchar(50) NOT NULL COMMENT 'Autocreated',
+  PRIMARY KEY (`siteId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sites`
+--
+
+LOCK TABLES `sites` WRITE;
+/*!40000 ALTER TABLE `sites` DISABLE KEYS */;
+INSERT INTO `sites` VALUES
+(1,'site #1'),
+(2,'site #2');
+/*!40000 ALTER TABLE `sites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `translationLanguages`
 --
 
@@ -127,7 +155,7 @@ CREATE TABLE `translationLanguages` (
   `translationLanguageCode` varchar(255) NOT NULL,
   `translationLanguageName` varchar(255) NOT NULL,
   PRIMARY KEY (`translationLanguageCode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +164,115 @@ CREATE TABLE `translationLanguages` (
 
 LOCK TABLES `translationLanguages` WRITE;
 /*!40000 ALTER TABLE `translationLanguages` DISABLE KEYS */;
-INSERT INTO `translationLanguages` VALUES ('af','Afrikaans'),('am','Amharic'),('ar','Arabic'),('az','Azerbaijani'),('be','Belarusian'),('bg','Bulgarian'),('bn','Bengali'),('bs','Bosnian'),('ca','Catalan'),('ceb','Cebuano'),('co','Corsican'),('cs','Czech'),('cy','Welsh'),('da','Danish'),('de','German'),('el','Greek'),('en','English'),('eo','Esperanto'),('es','Spanish'),('et','Estonian'),('eu','Basque'),('fa','Persian'),('fi','Finnish'),('fr','French'),('fy','Frisian'),('ga','Irish'),('gd','Scots Gaelic'),('gl','Galician'),('gu','Gujarati'),('ha','Hausa'),('haw','Hawaiian'),('he','Hebrew'),('hi','Hindi'),('hmn','Hmong'),('hr','Croatian'),('ht','Haitian'),('hu','Hungarian'),('hy','Armenian'),('id','Indonesian'),('ig','Igbo'),('is','Icelandic'),('it','Italian'),('ja','Japanese'),('jv','Javanese'),('ka','Georgian'),('kk','Kazakh'),('km','Khmer'),('kn','Kannada'),('ko','Korean'),('ku','Kurdish'),('ky','Kyrgyz'),('la','Latin'),('lb','Luxembourgish'),('lo','Lao'),('lt','Lithuanian'),('lv','Latvian'),('mg','Malagasy'),('mi','Maori'),('mk','Macedonian'),('ml','Malayalam'),('mn','Mongolian'),('mr','Marathi'),('ms','Malay'),('mt','Maltese'),('my','Myanmar'),('ne','Nepali'),('nl','Dutch'),('no','Norwegian'),('ny','Nyanja (Chichewa)'),('or','Odia (Oriya)'),('pa','Punjabi'),('pl','Polish'),('ps','Pashto'),('pt','Portuguese'),('ro','Romanian'),('ru','Russian'),('rw','Kinyarwanda'),('sd','Sindhi'),('si','Sinhala (Sinhalese)'),('sk','Slovak'),('sl','Slovenian'),('sm','Samoan'),('sn','Shona'),('so','Somali'),('sq','Albanian'),('sr','Serbian'),('st','Sesotho'),('su','Sundanese'),('sv','Swedish'),('sw','Swahili'),('ta','Tamil'),('te','Telugu'),('tg','Tajik'),('th','Thai'),('tk','Turkmen'),('tl','Tagalog (Filipino)'),('tr','Turkish'),('tt','Tatar'),('ug','Uyghur'),('uk','Ukrainian'),('ur','Urdu'),('uz','Uzbek'),('vi','Vietnamese'),('xh','Xhosa'),('yi','Yiddish'),('yo','Yoruba'),('zh','Chinese'),('zu','Zulu');
+INSERT INTO `translationLanguages` VALUES
+('af','Afrikaans'),
+('am','Amharic'),
+('ar','Arabic'),
+('az','Azerbaijani'),
+('be','Belarusian'),
+('bg','Bulgarian'),
+('bn','Bengali'),
+('bs','Bosnian'),
+('ca','Catalan'),
+('ceb','Cebuano'),
+('co','Corsican'),
+('cs','Czech'),
+('cy','Welsh'),
+('da','Danish'),
+('de','German'),
+('el','Greek'),
+('en','English'),
+('eo','Esperanto'),
+('es','Spanish'),
+('et','Estonian'),
+('eu','Basque'),
+('fa','Persian'),
+('fi','Finnish'),
+('fr','French'),
+('fy','Frisian'),
+('ga','Irish'),
+('gd','Scots Gaelic'),
+('gl','Galician'),
+('gu','Gujarati'),
+('ha','Hausa'),
+('haw','Hawaiian'),
+('he','Hebrew'),
+('hi','Hindi'),
+('hmn','Hmong'),
+('hr','Croatian'),
+('ht','Haitian'),
+('hu','Hungarian'),
+('hy','Armenian'),
+('id','Indonesian'),
+('ig','Igbo'),
+('is','Icelandic'),
+('it','Italian'),
+('ja','Japanese'),
+('jv','Javanese'),
+('ka','Georgian'),
+('kk','Kazakh'),
+('km','Khmer'),
+('kn','Kannada'),
+('ko','Korean'),
+('ku','Kurdish'),
+('ky','Kyrgyz'),
+('la','Latin'),
+('lb','Luxembourgish'),
+('lo','Lao'),
+('lt','Lithuanian'),
+('lv','Latvian'),
+('mg','Malagasy'),
+('mi','Maori'),
+('mk','Macedonian'),
+('ml','Malayalam'),
+('mn','Mongolian'),
+('mr','Marathi'),
+('ms','Malay'),
+('mt','Maltese'),
+('my','Myanmar'),
+('ne','Nepali'),
+('nl','Dutch'),
+('no','Norwegian'),
+('ny','Nyanja (Chichewa)'),
+('or','Odia (Oriya)'),
+('pa','Punjabi'),
+('pl','Polish'),
+('ps','Pashto'),
+('pt','Portuguese'),
+('ro','Romanian'),
+('ru','Russian'),
+('rw','Kinyarwanda'),
+('sd','Sindhi'),
+('si','Sinhala (Sinhalese)'),
+('sk','Slovak'),
+('sl','Slovenian'),
+('sm','Samoan'),
+('sn','Shona'),
+('so','Somali'),
+('sq','Albanian'),
+('sr','Serbian'),
+('st','Sesotho'),
+('su','Sundanese'),
+('sv','Swedish'),
+('sw','Swahili'),
+('ta','Tamil'),
+('te','Telugu'),
+('tg','Tajik'),
+('th','Thai'),
+('tk','Turkmen'),
+('tl','Tagalog (Filipino)'),
+('tr','Turkish'),
+('tt','Tatar'),
+('ug','Uyghur'),
+('uk','Ukrainian'),
+('ur','Urdu'),
+('uz','Uzbek'),
+('vi','Vietnamese'),
+('xh','Xhosa'),
+('yi','Yiddish'),
+('yo','Yoruba'),
+('zh','Chinese'),
+('zu','Zulu');
 /*!40000 ALTER TABLE `translationLanguages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,11 +313,11 @@ CREATE TABLE `users` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userName` varchar(191) NOT NULL,
   `userEmail` varchar(191) NOT NULL,
-  `userIsAdmin` tinyint(4) NOT NULL DEFAULT '0',
+  `userIsAdmin` tinyint(4) NOT NULL DEFAULT 0,
   `userPassword` varchar(191) NOT NULL,
-  `userDeleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `userDeleted` tinyint(1) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +326,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Demo User','demo@example.com',1,'$2y$10$vTje.ndUFKHyuotY99iYkO.2aHJUgOsy2x0RMXP1UmrTe6CQsKbtm',0);
+INSERT INTO `users` VALUES
+(1,'Demo User','demo@example.com',1,'$2y$10$vTje.ndUFKHyuotY99iYkO.2aHJUgOsy2x0RMXP1UmrTe6CQsKbtm',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -203,4 +340,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-24 22:34:07
+-- Dump completed on 2023-10-30 18:57:21
