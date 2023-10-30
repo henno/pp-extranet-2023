@@ -197,6 +197,7 @@ class Application
 
 
             // Set controller, action and params
+            $this->client = isset($path[0]) ? array_shift($path) : Client::getSlug(1);
             $this->controller = isset($path[0]) ? array_shift($path) : DEFAULT_CONTROLLER;
             $this->action = isset($path[0]) && !empty($path[0]) ? array_shift($path) : 'index';
             $this->params = isset($path[0]) ? $path : array();

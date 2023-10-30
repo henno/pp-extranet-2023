@@ -19,7 +19,7 @@
                     <!-- SITE -->
                     <div class="field">
                         <label for="site"><?= __('Site') ?></label>
-                        <div class="ui fluid multiple search selection dropdown">
+                        <div class="ui dropdown fluid multiple search selection" id="site">
                             <input name="site" id="site" type="hidden">
                             <i class="dropdown icon"></i>
                             <div class="default text"><?= __('Choose a site') ?></div>
@@ -27,31 +27,14 @@
                     </div>
 
                     <!-- PRIORITY -->
+
                     <div class="field">
                         <label for="priority"><?= __('Priority') ?></label>
-                        <div class="ui bottom aligned labeled slider" id="priority"></div>
-
+                        <select class="ui selection dropdown" id="priority">
+                            <input type="hidden" name="priority" value="normal">
+                            <div class="menu"></div>
+                        </select>
                     </div>
-
-                    <!-- Add more fields for this column as needed -->
-                </div>
-
-                <!-- Second Column -->
-                <div class="column">
-                    <div class="field">
-                        <span for="field2">Field 2</span>
-                        <input type="text" name="field2" placeholder="Field 2">
-                    </div>
-                    <!-- Add more fields for this column as needed -->
-                </div>
-
-                <!-- Third Column -->
-                <div class="column">
-                    <div class="field">
-                        <label for="field3">Field 3</label>
-                        <input type="text" name="field3" placeholder="Field 3">
-                    </div>
-                    <!-- Add more fields for this column as needed -->
                 </div>
             </div>
         </form>
@@ -72,7 +55,7 @@
     // Load after page is loaded
     $(() => {
         // SITE
-        $('.ui.dropdown').dropdown({
+        $('#site.ui.dropdown').dropdown({
             allowAdditions: true,
             values: <?= json_encode($sites) ?>,
             onChange: function (value, text, $selectedItem) {
@@ -85,20 +68,12 @@
             }
         });
 
-        // PRIORITIES
-        var labels = <?= json_encode($priorities) ?>;
-        var customLabels = labels;
 
-        $('#priority').slider({
-            min: 0,
-            max: 2,
-            start: 1,
-            step: 1,
-            interpretLabel: function(value) {
-                return customLabels[value];
-            }
+        // PRIORITIES newer version
+        $('#priority.ui.selection.dropdown').dropdown({
+            values: <?= json_encode($priorities) ?>
         });
+        $('#priority').dropdown('set selected', 'normal');
 
-        $('.ui.modal.order-modal').modal('attach events', '#new-order-button', 'show');
     });
 </script>

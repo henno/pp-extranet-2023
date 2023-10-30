@@ -7,9 +7,9 @@ class dashboard extends Controller
         $this->users = Db::getAll("SELECT * FROM users");
         $this->sites = Db::getAll("SELECT siteId value, siteName name FROM sites");
         $this->priorities = [
-            __('Normal priority'),
-            __('High priority'),
-            __('Urgent priority')
+            ['name' => __('Normal priority'), 'value' => 'normal'],
+            ['name' => __('High priority'), 'value' => 'high'],
+            ['name' => __('Urgent priority'), 'value' => 'urgent']
         ];
 
     }
