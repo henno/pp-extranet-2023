@@ -9,7 +9,7 @@ class SQL
         $where = '';
         if (!empty($criteria)) {
             if (is_array($criteria)) {
-                $where = "WHERE " . implode(' AND ', escape($criteria));
+                $where = "WHERE " . implode(' AND ', $criteria);
             } else if (is_numeric($criteria)) {
                 $where = "WHERE $id_field = $criteria";
             } else {

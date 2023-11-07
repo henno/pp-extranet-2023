@@ -202,7 +202,7 @@ class Db
         return self::getInstance()->executePrepared($query, $params)->fetch_assoc();
     }
 
-    public static function getAll($query, $params = [])
+    public static function getAll($query, $params = []): array
     {
         $result = self::getInstance()->executePrepared($query, $params);
         $output = [];

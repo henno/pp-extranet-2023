@@ -99,7 +99,7 @@ class halo extends Controller
     private function replace_preserving_case($needle, $replacement, $haystack)
     {
         if (preg_match_all("/$needle/i", $haystack, $matches) !== FALSE) {
-            foreach($matches[0] as $match){
+            foreach ($matches[0] as $match) {
 
                 // Lowercase
                 if ($match == strtolower($match)) {
@@ -124,6 +124,45 @@ class halo extends Controller
 
     function generate_password_hash(){
         exit( password_hash($_POST['password'], PASSWORD_DEFAULT) );
+    }
+
+    function fkcheck()
+    {
+
+        $tables = [];
+        $database = DATABASE_DATABASE;
+        $rows = Db::getAll("SELECT * FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = '$database' AND COLUMN_NAME LIKE '%_id'");
+        foreach ($rows as $row) {
+            $tables[$row['TABLE_NAME']][$row['COLUMN_NAME']] = $row;
+        }
+
+        foreach ($tables as $table_name => $columns) {
+
+            foreach ($columns as $column_name => $column) {
+
+                $rows = Db::getAll("
+                    SELECT *
+                    FROM information_schema.`KEY_COLUMN_USAGE` kcu
+                             JOIN information_schema.`TABLE_CONSTRAINTS` tc
+                                  ON kcu.TABLE_NAME = tc.TABLE_NAME AND kcu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME AND
+                                     kcu.TABLE_SCHEMA = tc.TABLE_SCHEMA
+                    WHERE kcu.TABLE_SCHEMA = '$database'
+                      AND kcu.TABLE_NAME = '$table_name'
+                      AND kcu.COLUMN_NAME = '$column_name'");
+
+                if (empty($rows)) {
+                    $results[] = '<span class="bad">' . $table_name . '.' . $column_name . ' does not reference other columns' . '</span>';
+                } else {
+                    foreach ($rows as $row) {
+                        if ($row['CONSTRAINT_TYPE'] == 'FOREIGN KEY') {
+                            $results[] = '<span class="good">' . $row['TABLE_NAME'] . '.' . $row['COLUMN_NAME'] . ' has a ' . $row['CONSTRAINT_TYPE'] . ' constraint with ' . $row['REFERENCED_TABLE_NAME'] . '.' . $row['REFERENCED_COLUMN_NAME'] . '</span>';
+                        }
+                    }
+                }
+            }
+        }
+        $this->results = $results;
+
     }
 
 }
