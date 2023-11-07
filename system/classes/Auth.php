@@ -1,16 +1,16 @@
 <?php namespace App;
 
-
 /**
  * Class auth authenticates user and permits to check if the user has been logged in
  * Automatically loaded when the controller has $requires_auth property.
  */
 class Auth
 {
-
+    private static ?Auth $instance = null;
     public $logged_in = FALSE;
+    private int $userRole;
 
-    function __construct()
+    private function __construct()
     {
         if (isset($_SESSION['userId'])) {
             $this->logged_in = TRUE;
@@ -37,11 +37,66 @@ class Auth
         $this->logged_in = TRUE;
     }
 
+    public static function hasPermission(mixed $requiredRole, $exact = true): bool
+    {
+        $actualRole = Auth::getInstance()->userRole;
+        // Support array of roles
+        if (is_array($requiredRole)) {
+            if (in_array($actualRole, $requiredRole, true)) {
+                return true;
+            }
+            return false;
+        }
+        if ($exact) {
+            return $actualRole === $requiredRole;
+        }
+        return $actualRole >= $requiredRole;
+    }
+
+    private static function getUserRole(): int
+    {
+        $auth = Auth::getInstance();
+
+        // Check if the user is logged in
+        if (!$auth->logged_in) {
+            return 0;
+        }
+
+        // Check if the data is already loaded in the cache
+        if (isset($auth->userRole)) {
+            return $auth->userRole;
+        }
+        return Db::getFirst("SELECT userRole FROM users WHERE userId = '{$_SESSION['userId']}'")['userRole'];
+    }
+
+    public static function getUserField($field) {
+        $auth = Auth::getInstance();
+
+        // Check if the user is logged in
+        if (!$auth->logged_in) {
+            return null;
+        }
+
+        // Check if the data is already loaded in the cache
+        if (isset($auth->$field)) {
+            return $auth->$field;
+        }
+        return Db::getFirst("SELECT $field FROM users WHERE userId = '{$_SESSION['userId']}'")[$field];
+    }
+
+    public static function getInstance(): ?Auth
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     /**
      * Verifies if the user is logged in and authenticates if not and POST contains username, else displays the login form
      * @return bool Returns true when the user has been logged in
      */
-    function require_auth()
+    function require_auth(): bool
     {
 
         // If user has already logged in...

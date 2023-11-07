@@ -4,7 +4,7 @@ class halo extends Controller
 {
     public $requires_auth = true;
     public $requires_admin = true;
-    public $template = 'master';
+    public $template = 'halo';
 
     function index()
     {
@@ -37,16 +37,16 @@ class halo extends Controller
 
             // Add table to database
             Db::q("CREATE TABLE `$name_plural_esc` (
-             `{$name_singular_esc}_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
-             `{$name_singular_esc}_name` varchar(50) NOT NULL COMMENT 'Autocreated',
-             PRIMARY KEY (`{$name_singular_esc}_id`)
+             `{$name_singular_esc}Id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+             `{$name_singular_esc}Name` varchar(50) NOT NULL COMMENT 'Autocreated',
+             PRIMARY KEY (`{$name_singular_esc}Id`)
            ) ENGINE=InnoDB AUTO_INCREMENT=1");
 
             // Print banner
 
             // Add 2 rows to database
-            Db::insert($table_name, array($table_prefix . '_name' => $name_singular . " #1"));
-            Db::insert($table_name, array($table_prefix . '_name' => $name_singular . " #2"));
+            Db::insert($table_name, array($table_prefix . 'Name' => $name_singular . " #1"));
+            Db::insert($table_name, array($table_prefix . 'Name' => $name_singular . " #2"));
 
             // Add controller from template (substituting module for controller's name)
             $content = file_get_contents('system/scaffolding/controller_template.php');
@@ -122,8 +122,9 @@ class halo extends Controller
         return $haystack;
     }
 
-    function generate_password_hash(){
-        exit( password_hash($_POST['password'], PASSWORD_DEFAULT) );
+    function generate_password_hash()
+    {
+        exit(password_hash($_POST['password'], PASSWORD_DEFAULT));
     }
 
     function fkcheck()

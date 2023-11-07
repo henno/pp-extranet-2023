@@ -5,7 +5,10 @@ class clients extends Controller
 
     function index()
     {
-        $this->clients = Db::getAll("SELECT * FROM clients");
+        // Add logged-in user's clientId to criteria if the user is not an admin
+        $criteria = User::isAdmin() ? null : ["clientId = " . User::getClientId()];
+
+        $this->clients = Client::getWithUsers($criteria, true);
     }
 
     function view()

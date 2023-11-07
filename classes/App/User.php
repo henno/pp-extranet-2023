@@ -8,6 +8,9 @@
  */
 class User
 {
+    // To hold the logged-in user data
+    public static $data;
+
     static function register($userName, $userEmail, $userPassword, $userIsAdmin = 0)
     {
         // Get data to be inserted from function argument list
@@ -65,6 +68,56 @@ class User
                 'userDeleted' => 1
             ], "userId=$userId");
         }
+    }
+
+
+    /**
+     * @throws \Exception if user is not logged in
+     */
+    public static function isAdmin(): bool
+    {
+        // Ensure that user data is loaded
+        self::ensureUserDataLoaded();
+
+        // Return true if user is an admin, false otherwise
+        return (bool)self::$data['userIsAdmin'];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function ensureUserDataLoaded(): void
+    {
+        if (!isset(self::$data)) {
+            self::loadUserData();
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function loadUserData(): void
+    {
+        if (!isset($_SESSION['userId'])) {
+            throw new \Exception('User is not logged in');
+        }
+
+        self::$data = Db::getFirst("
+            SELECT userId, userName, userEmail, userIsAdmin, clientId
+            FROM users
+            WHERE userId = ?", [$_SESSION['userId']]);
+    }
+
+    /**
+     * @throws \Exception if user is not logged in
+     */
+    public static function getClientId()
+    {
+        // Ensure that user data is loaded
+        self::ensureUserDataLoaded();
+
+        // Return clientId
+        return self::$data['clientId'];
     }
 
 }

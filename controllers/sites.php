@@ -2,6 +2,7 @@
 
 class sites extends Controller
 {
+    public $requires_admin = true;
 
     function index()
     {

@@ -1,17 +1,17 @@
 <?php namespace App;
+
 class orders extends Controller
 {
-    function AJAX_add()
+
+    function index()
     {
-        $orderId = Db::insert('orders', [
-            'userId' => $this->$this->auth->userId,
-            'orderTimestamp' => date('Y-m-d H:i:s')
-            'clientId' => $this->clientId,
-        ]);
-
-
-
-
-        stop(201, 'Order added');
+        $this->orders = Db::getAll("SELECT * FROM orders");
     }
+
+    function view()
+    {
+        $orderId = $this->getId();
+        $this->order = Db::getFirst("SELECT * FROM orders WHERE orderId = '{$orderId}'");
+    }
+
 }

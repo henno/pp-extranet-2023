@@ -33,7 +33,8 @@ class Application
         $this->process_uri();
         $this->update_settings();
         $this->handle_routing();
-        $this->auth = new Auth();
+        $this->verify_that_client_id_is_present_in_the_url();
+        $this->auth = Auth::getInstance();
 
         // Instantiate controller
         $controller_fqn = '\App\\' . $this->controller;
@@ -167,7 +168,7 @@ class Application
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true : false;
         $sp = strtolower($s['SERVER_PROTOCOL']);
         $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
-        $host = isset($s['HTTP_X_FORWARDED_HOST']) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : $s['SERVER_NAME']);
+        $host = $s['HTTP_X_FORWARDED_HOST'] ?? ($s['HTTP_HOST'] ?? $s['SERVER_NAME']);
         $uri = $protocol . '://' . $host . dirname($_SERVER['SCRIPT_NAME']);
         define('BASE_URL', rtrim($uri, '/') . '/');
     }
@@ -197,7 +198,6 @@ class Application
 
 
             // Set controller, action and params
-            $this->client = isset($path[0]) ? array_shift($path) : (Client::getSlug(1) ?: 'undefined');
             $this->controller = isset($path[0]) ? array_shift($path) : DEFAULT_CONTROLLER;
             $this->action = isset($path[0]) && !empty($path[0]) ? array_shift($path) : 'index';
             $this->params = isset($path[0]) ? $path : array();
@@ -278,6 +278,14 @@ class Application
 
         }
 
+    }
+
+    private function verify_that_client_id_is_present_in_the_url()
+    {
+        // Check if the user is a superadmin or admin or client admin
+        if (!in_array($_SESSION['userRole'], ['superadmin', 'admin', 'client admin'])) {
+            return;
+        }
     }
 
 
