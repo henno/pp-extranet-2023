@@ -45,11 +45,9 @@
     </footer>
 </div>
 
-
 <script>
     $('#order-modal-submit-button').click(() => {
         ajax('orders/add', serializeFormToObject($('.ui.form')), RELOAD);
-        ch
     });
 
     // Load after page is loaded

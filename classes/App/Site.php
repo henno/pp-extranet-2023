@@ -14,6 +14,7 @@ class Site extends Model
     public static function getMine(): array
     {
         $result = [];
+        $criteria = [];
 
         // If a specific client is selected in the URL, add it to the WHERE clause
         if (isset($_GET['clientId'])) {
@@ -24,21 +25,12 @@ class Site extends Model
 
         $where = SQL::getWhere($criteria);
 
-        $sites = Db::getAll("
-            SELECT siteId
-                 , siteName
+        return Db::getAll("
+            SELECT siteId as id
+                 , siteName as name
             FROM sites
             $where
             ORDER BY siteName");
-
-        foreach ($sites as $site) {
-            $result[$site['siteId']] = [
-                'siteId' => $site['siteId'],
-                'siteName' => $site['siteName'],
-            ];
-        }
-
-        return $result;
 
     }
 

@@ -280,12 +280,42 @@ class Application
 
     }
 
+//    private function verify_that_client_id_is_present_in_the_url()
+//    {
+//        // Check if the user is a superadmin or admin or client admin
+//        if (!in_array($_SESSION['userRole'], ['superadmin', 'admin', 'client admin'])) {
+//            return;
+//        }
+//    }
+
+
+    /* Checks that the client ID is present in the URL
+     * If not, redirects to the same URL with the client ID added:
+     * - if the user is a superadmin or admin, adds the client ID of the first client
+     * - if the user is a client admin, adds the client ID of the client he belongs to
+     * - if the user is a user, adds the client ID of the client he belongs to
+     *
+     */
+
+//    TODO: finish this function
+
     private function verify_that_client_id_is_present_in_the_url()
     {
         // Check if the user is a superadmin or admin or client admin
         if (!in_array($_SESSION['userRole'], ['superadmin', 'admin', 'client admin'])) {
             return;
         }
+
+        // Check if the client ID is present in the URL
+        if (isset($_GET['clientId'])) {
+            return;
+        }
+
+        // If not, redirect to the same URL with the client ID added
+        $clientId = Db::getFirstValue("SELECT clientId FROM clients ORDER BY clientId LIMIT 1");
+        $url = $_SERVER['REQUEST_URI'] . (strpos($_SERVER['REQUEST_URI'], '?') === false ? '?' : '&') . "clientId=$clientId";
+        header("Location: $url");
+        exit();
     }
 
 
