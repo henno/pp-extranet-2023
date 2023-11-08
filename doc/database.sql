@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19-11.0.2-MariaDB, for osx10.18 (arm64)
 --
 -- Host: localhost    Database: ppExtranet
 -- ------------------------------------------------------
--- Server version	10.4.28-MariaDB
+-- Server version	11.0.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `activities` (
   `activityName` varchar(50) NOT NULL COMMENT 'Autocreated',
   `activityDescription` varchar(191) NOT NULL,
   PRIMARY KEY (`activityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,24 +67,32 @@ LOCK TABLES `activityLog` WRITE;
 /*!40000 ALTER TABLE `activityLog` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `clients`
+--
+
 DROP TABLE IF EXISTS `clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `clients` (
-                           `clientId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
-                           `clientName` varchar(50) NOT NULL COMMENT 'Autocreated',
-                           `clientSlug` varchar(191) DEFAULT NULL,
-                           PRIMARY KEY (`clientId`)
+  `clientId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `clientName` varchar(50) NOT NULL COMMENT 'Autocreated',
+  PRIMARY KEY (`clientId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
 -- Dumping data for table `clients`
 --
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'client #1','clientOne'),(2,'client #2','clientTwo');
+INSERT INTO `clients` VALUES
+(1,'client #1'),
+(2,'client #2');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
+
 --
 -- Table structure for table `deployments`
 --
@@ -100,7 +108,7 @@ CREATE TABLE `deployments` (
   `deploymentCommitAuthor` varchar(255) DEFAULT NULL,
   `deploymentCommitSha` varchar(256) NOT NULL,
   PRIMARY KEY (`deploymentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,6 +118,62 @@ CREATE TABLE `deployments` (
 LOCK TABLES `deployments` WRITE;
 /*!40000 ALTER TABLE `deployments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `deployments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orders` (
+  `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
+  `orderName` varchar(50) NOT NULL COMMENT 'Autocreated',
+  `userId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`orderId`),
+  KEY `orders_users_userId_fk` (`userId`),
+  CONSTRAINT `orders_users_userId_fk` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES
+(1,'order #1',1),
+(2,'order #2',1);
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permissions`
+--
+
+DROP TABLE IF EXISTS `permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permissions` (
+  `permissionId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `permissionName` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`permissionId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permissions`
+--
+
+LOCK TABLES `permissions` WRITE;
+/*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
+INSERT INTO `permissions` VALUES
+(1,'CAN_ADD_USERS'),
+(2,'CAN_ADD_SITES'),
+(3,'IS_SUPERADMIN');
+/*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -123,7 +187,7 @@ CREATE TABLE `settings` (
   `settingName` varchar(255) NOT NULL,
   `settingValue` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`settingName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +210,11 @@ DROP TABLE IF EXISTS `sites`;
 CREATE TABLE `sites` (
   `siteId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autocreated',
   `siteName` varchar(50) NOT NULL COMMENT 'Autocreated',
-  PRIMARY KEY (`siteId`)
+  `clientId` int(10) unsigned DEFAULT NULL,
+  `adminId` int(10) unsigned NOT NULL COMMENT 'userId who has the admin rights to this office',
+  PRIMARY KEY (`siteId`),
+  KEY `sites_clients_clientId_fk` (`clientId`),
+  CONSTRAINT `sites_clients_clientId_fk` FOREIGN KEY (`clientId`) REFERENCES `clients` (`clientId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,7 +224,9 @@ CREATE TABLE `sites` (
 
 LOCK TABLES `sites` WRITE;
 /*!40000 ALTER TABLE `sites` DISABLE KEYS */;
-INSERT INTO `sites` VALUES (1,'site #1'),(2,'site #2');
+INSERT INTO `sites` VALUES
+(1,'site #1',NULL,1),
+(2,'site #2',NULL,1);
 /*!40000 ALTER TABLE `sites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +376,7 @@ CREATE TABLE `translations` (
   `TranslationSource` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`translationId`),
   UNIQUE KEY `translations_translationPhrase_uindex` (`translationPhrase`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,10 +399,13 @@ CREATE TABLE `users` (
   `userId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userName` varchar(191) NOT NULL,
   `userEmail` varchar(191) NOT NULL,
-  `userIsAdmin` tinyint(4) NOT NULL DEFAULT 0,
   `userPassword` varchar(191) NOT NULL,
   `userDeleted` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`userId`)
+  `userRole` tinyint(3) unsigned NOT NULL DEFAULT 4,
+  `siteId` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`userId`),
+  KEY `users_sites_siteId_fk` (`siteId`),
+  CONSTRAINT `users_sites_siteId_fk` FOREIGN KEY (`siteId`) REFERENCES `sites` (`siteId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -343,7 +416,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'Demo User','demo@example.com',1,'$2y$10$vTje.ndUFKHyuotY99iYkO.2aHJUgOsy2x0RMXP1UmrTe6CQsKbtm',0);
+(1,'Demo User','demo@example.com','$2y$10$vTje.ndUFKHyuotY99iYkO.2aHJUgOsy2x0RMXP1UmrTe6CQsKbtm',0,1,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -356,4 +429,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-30 21:32:33
+-- Dump completed on 2023-11-08 21:19:31
