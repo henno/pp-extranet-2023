@@ -301,8 +301,13 @@ class Application
 
     private function verify_that_client_id_is_present_in_the_url()
     {
+
+        $auth = Auth::getInstance();
+
+        $ClientIdRequired = ['superadmin', 'admin', 'client admin'];
+
         // Check if the user is a superadmin or admin or client admin
-        if (!in_array($_SESSION['userRole'], ['superadmin', 'admin', 'client admin'])) {
+        if (!$auth->isUserRoleInArray($ClientIdRequired)) {
             return;
         }
 

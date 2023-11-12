@@ -69,6 +69,12 @@ class Auth
         return Db::getFirst("SELECT userRole FROM users WHERE userId = '{$_SESSION['userId']}'")['userRole'];
     }
 
+    // Check if the user has a role that is in the array
+    public function isUserRoleInArray(array $roles): bool
+    {
+        return in_array($this->userRole, $roles, true);
+    }
+
     public static function getUserField($field) {
         $auth = Auth::getInstance();
 

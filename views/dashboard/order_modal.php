@@ -27,13 +27,13 @@
                     </div>
 
                     <!-- PRIORITY -->
-
                     <div class="field">
                         <label for="priority"><?= __('Priority') ?></label>
-                        <select class="ui selection dropdown" id="priority">
-                            <input type="hidden" name="priority" value="normal">
+                        <div class="ui selection dropdown" id="priority">
+                            <input type="hidden" name="priority">
                             <div class="menu"></div>
-                        </select>
+                            <div class="default text"><?= __('Normal') ?></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,24 +50,19 @@
         ajax('orders/add', serializeFormToObject($('.ui.form')), RELOAD);
     });
 
-    // Load after page is loaded
     $(() => {
-        // SITE
+        // SITES
         $('#site.ui.dropdown').dropdown({
             allowAdditions: true,
             values: <?= json_encode($sites) ?>,
-            onChange: function (value, text, $selectedItem) {
-
-                // Close the dropdown after 100ms
-                setTimeout(() => {
-                    $('.ui.dropdown').dropdown('hide');
-                }, 100);
-
+            onChange: function (value) {
+                if (value === '') {
+                    $('#site').dropdown('clear');
+                }
             }
         });
 
-
-        // PRIORITIES newer version
+        // PRIORITIES
         $('#priority.ui.selection.dropdown').dropdown({
             values: <?= json_encode($priorities) ?>
         });
