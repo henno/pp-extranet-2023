@@ -29,8 +29,6 @@ class Auth
     public
     function load_user_data($user)
     {
-
-
         foreach ($user as $user_attr => $value) {
             $this->$user_attr = $value;
         }
@@ -53,7 +51,7 @@ class Auth
         return $actualRole >= $requiredRole;
     }
 
-    private static function getUserRole(): int
+    public static function getUserRole(): int
     {
         $auth = Auth::getInstance();
 
@@ -69,9 +67,12 @@ class Auth
         return Db::getFirst("SELECT userRole FROM users WHERE userId = '{$_SESSION['userId']}'")['userRole'];
     }
 
-    // Check if the user has a role that is in the array
     public function isUserRoleInArray(array $roles): bool
     {
+        // Check if $userRole is set, if not, initialize it using getUserRole method
+        if (!isset($this->userRole)) {
+            $this->userRole = self::getUserRole();
+        }
         return in_array($this->userRole, $roles, true);
     }
 

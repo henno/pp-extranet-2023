@@ -15,11 +15,12 @@ class orders extends Controller
     }
 
 
-    // TODO: make this function into ajax so it wouldn't require a view (?)
-
 
     function add()
     {
+
+        header('Content-Type: application/json');
+
         // Check if the user is logged in and get the userId
         if (!isset($_SESSION['userId'])) {
             echo json_encode(['success' => false, 'error' => 'User is not logged in.']);
